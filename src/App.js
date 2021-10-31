@@ -1,8 +1,19 @@
 import './App.css';
+import React,{useState, useEffect} from 'react';
 
 function App() {
   
+  const [currentTime, setCurrentTime] = useState(0);
   
+  useEffect(() => {
+
+    fetch('/time').then(res => res.json()).then(data => {
+      setCurrentTime(data.time);
+
+    });
+
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -14,6 +25,7 @@ function App() {
         >
           Selamat Mengkuli
         </a>
+        <p>Waktu sekarang adalah {currentTime}.</p>
       </header>
     </div>
   );
