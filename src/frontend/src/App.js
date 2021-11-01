@@ -25,7 +25,7 @@ function App() {
         >
           Selamat Mengkuli
         </a>
-        <p>Waktu sekarang adalah {currentTime}.</p>
+        <p>Waktu sekarang adalah <br/>{currentTime}.</p>
       </header>
     </div>
   );
