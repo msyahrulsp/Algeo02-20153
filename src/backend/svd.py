@@ -7,8 +7,6 @@ image = Image.open('src/backend/lena_image.jpg')
 array_image = np.asarray(image)
 array_image_transpose = array_image.transpose()
 
-#mencari nilai eigen dari singular kiri
-aaT = np.matmul(array_image,array_image_transpose)
 
 def zeros_matrix(rows, cols):
     #fungsi buat bikin matriks yang isi nya nol
@@ -17,7 +15,7 @@ def zeros_matrix(rows, cols):
     while len(M) < rows:
         M.append([])
         while len(M[-1]) < cols:
-            M[-1].append(0.0)
+            M[-1].append(0)
     return M
 
 def identity_matrix(n):
@@ -25,10 +23,12 @@ def identity_matrix(n):
     #kepake nanti buat nyari nilai eigen value
     IdM = zeros_matrix(n,n)
     for i in range(n):
-        IdM[i][i] = 1.0
+        IdM[i][i] = 1
     return IdM
 
 
+#mencari nilai eigen dari singular kiri
+aaT = np.matmul(array_image,array_image_transpose)
 
 
 #mencari nilai eigen dari singular kanan
