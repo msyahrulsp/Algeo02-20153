@@ -1,12 +1,13 @@
 from PIL import Image
-from numpy import np
+import numpy as np
 from numpy.lib.function_base import append
+from numpy.linalg import qr
+
 
 image = Image.open('src/backend/lena_image.jpg')
 
 array_image = np.asarray(image)
 array_image_transpose = array_image.transpose()
-
 
 def zeros_matrix(rows, cols):
     #fungsi buat bikin matriks yang isi nya nol
@@ -25,6 +26,7 @@ def identity_matrix(n):
     for i in range(n):
         IdM[i][i] = 1
     return IdM
+
 
 
 #mencari nilai eigen dari singular kiri
