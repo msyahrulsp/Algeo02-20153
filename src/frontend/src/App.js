@@ -1,5 +1,6 @@
 import './App.css';
 import React,{useState, useEffect} from 'react';
+import Main from './components/Main';
 
 function App() {
   
@@ -14,6 +15,8 @@ function App() {
 
   }, []);
 
+  
+
   return (
     <div className="App">
       <header className="App-header">
@@ -27,6 +30,8 @@ function App() {
         </a>
         <p>Waktu sekarang adalah <br/>{currentTime}.</p>
       </header>
+      <h1>Upload Image</h1>
+      <Main />
     </div>
   );
 }
