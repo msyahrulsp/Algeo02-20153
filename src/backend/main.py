@@ -7,7 +7,6 @@ from werkzeug.utils import redirect, secure_filename
 from flask import request,session
 import os
 import logging
-from flask_cors import CORS,cross_origin
 
 logging.basicConfig(level=logging.INFO)
 
@@ -21,25 +20,43 @@ def get_return_time():
 
 UPLOAD_FOLDER = 'static/'
 
-
+app.secret_key='secret key'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16*1024*1024
 
 ALLOWED_EXTENSIONS = set(['png','jpg','jpeg'])
+
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 @app.route('/upload', methods=['POST'])
 def fileUpload():
     target=os.path.join(UPLOAD_FOLDER,'test_docs')
     if not os.path.isdir(target):
         os.mkdir(target)
-    logger.info("welcome to upload`")
-    file = request.files['file'] 
-    filename = secure_filename(file.filename)
-    destination="/".join([target, filename])
-    file.save(destination)
-    session['uploadFilePath']=destination
-    response="Whatever you wish too return"
-    return response
+    logger.info("welcome to upload")
+    if 'file' not in request.files:
+        flash('No file part')
+
+    file = request.files['file']
+
+    if file.filename == '':
+        flash('No selected file')
+
+    if file and allowed_file(file.filename): 
+        filename = secure_filename(file.filename)
+        destination="/".join([target, filename])
+        file.save(destination)
+        session['uploadFilePath']=destination
+        response="Whatever you wish too return"
+        return response
+
+@app.route('/display/<filename>')
+def display_image(filename):
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
 
 if __name__ == "__main__":
     app.secret_key = os.urandom(24)

@@ -14,17 +14,21 @@ class Main extends React.Component {
   handleUploadImage(ev) {
     ev.preventDefault();
 
+
     const data = new FormData();
+
+    const fileName = this.uploadInput.files[0].name;
     data.append('file', this.uploadInput.files[0]);
-    data.append('filename', this.fileName.value);
+    data.append('filename', this.uploadInput.files[0].name);
 
     fetch('/upload', {
       method: 'POST',
       body: data,
     }).then((response) => {
-      response.json().then((body) => {
-        this.setState({ imageURL: `http://127.0.0.1:5000/${body.file}` });
-      });
+
+        if(response.status === 200){
+            this.setState({ imageURL: `http://127.0.0.1:5000/static/test_docs/${fileName}`});
+        }
     });
   }
 
@@ -40,8 +44,8 @@ class Main extends React.Component {
         <br />
         <div>
           <button>Upload</button>
-        </div>
-        <img src={this.state.imageURL} alt="img" />
+        </div >
+        <img src={this.state.imageURL} alt="img" width='300px' />
       </form>
     );
   }
