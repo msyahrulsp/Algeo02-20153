@@ -39,11 +39,13 @@ def fileUpload():
     logger.info("welcome to upload")
     if 'file' not in request.files:
         flash('No file part')
-
+        return 'file belum di upload'
+    
     file = request.files['file']
 
     if file.filename == '':
         flash('No selected file')
+        return 'file belum di upload'
 
     if file and allowed_file(file.filename): 
         filename = secure_filename(file.filename)
@@ -52,6 +54,10 @@ def fileUpload():
         session['uploadFilePath']=destination
         response="Whatever you wish too return"
         return response
+    else:
+        flash('Format dokumen yang diterima adalah - png,jpg,jpeg')
+        return 'OK'
+
 
 @app.route('/display/<filename>')
 def display_image(filename):

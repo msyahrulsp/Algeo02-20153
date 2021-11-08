@@ -14,7 +14,6 @@ class Main extends React.Component {
   handleUploadImage(ev) {
     ev.preventDefault();
 
-
     const data = new FormData();
 
     const fileName = this.uploadInput.files[0].name;
@@ -38,7 +37,6 @@ class Main extends React.Component {
         <div>
           <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
         </div>
-        <br />
         <div>
           <button>Upload</button>
         </div >
