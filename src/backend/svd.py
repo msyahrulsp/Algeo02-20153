@@ -2,9 +2,9 @@ from PIL import Image
 import numpy as np
 
 
-image = Image.open('monkas.png')
+# image = Image.open("lena_image.jpg")
 
-array_image = np.asarray(image).astype(np.float64)
+# array_image = np.asarray(image).astype(np.float64)
 
 
 def simultaneous_iteration(A, k=None, max_iter=1000, epsilon=1e-2):
@@ -111,10 +111,10 @@ def singular_value_decomposition(A, k=None, max_iter=200, epsilon=1e-2):
         result.append(res)
 
     rgb = np.dstack(result)
+    hasil = Image.fromarray(rgb)
+    return hasil
 
-    return rgb
 
-
-result = singular_value_decomposition(array_image, k=100)
-result = Image.fromarray(result)
-result.show()
+# result = singular_value_decomposition(array_image, k=10)
+# result = Image.fromarray(result)
+# result.show()

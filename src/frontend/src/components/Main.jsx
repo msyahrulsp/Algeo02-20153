@@ -6,6 +6,7 @@ class Main extends React.Component {
 
     this.state = {
       imageURL: '',
+      resimageURL:'',
       errorMessage:''
     };
 
@@ -37,6 +38,7 @@ class Main extends React.Component {
             if(response.status === 200){
                 this.setState({ 
                   imageURL: `http://127.0.0.1:5000/static/test_docs/${fileName}`,
+                  resimageURL: `http://127.0.0.1:5000/static/hasil/compressed_${fileName}`,
                   errorMessage:''
               });
             }
@@ -67,6 +69,7 @@ class Main extends React.Component {
           <button>Upload</button>
         </div >
         <img src={this.state.imageURL} alt="img" width='300px' />
+        <img src={this.state.resimageURL} alt="img" width='300px'/>
       </form>
     );
   }
