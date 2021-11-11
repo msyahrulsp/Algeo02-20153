@@ -12,19 +12,22 @@ class Main extends React.Component {
     this.handleUploadImage = this.handleUploadImage.bind(this);
   }
 
+  
+
   handleUploadImage(ev) {
     ev.preventDefault();
 
     const data = new FormData();
 
     console.log(this.uploadInput);
+    console.log(this.numberInput.value);
     if (this.uploadInput.files[0] != null){
       
       const fileName = this.uploadInput.files[0].name;
-      console.log(fileName)
       if (fileName.includes(".png") || fileName.includes('.jpg') || fileName.includes('.jpeg')){
         data.append('file', this.uploadInput.files[0]);
         data.append('filename', this.uploadInput.files[0].name);
+        data.append('compression_rate',this.numberInput.value);
     
         fetch('/upload', {
           method: 'POST',
@@ -45,7 +48,7 @@ class Main extends React.Component {
       }
     }else{
       this.setState({
-        errorMessage: 'Belum ada file yang di pilih'
+        errorMessage: 'Belum ada file yang di upload'
       })
       
     }
@@ -59,6 +62,7 @@ class Main extends React.Component {
           <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
         </div>
         <p>{this.state.errorMessage}</p>
+        <input ref={(ref) => {this.numberInput = ref; }} type='text' name="compression_rate" placeholder="Compression Rate"/>
         <div>
           <button>Upload</button>
         </div >

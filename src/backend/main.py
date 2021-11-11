@@ -32,12 +32,14 @@ def fileUpload():
         os.mkdir(target)
     logger.info("welcome to upload")
     file = request.files['file']
+    compression_rate = int(request.form['compression_rate'])
     filename = secure_filename(file.filename)
     destination="/".join([target, filename])
     file.save(destination)
     session['uploadFilePath']=destination
     response="Whatever you wish too return"
     return response
+
 
 
 @app.route('/display/<filename>')
