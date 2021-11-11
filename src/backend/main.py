@@ -24,12 +24,6 @@ app.secret_key='secret key'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16*1024*1024
 
-ALLOWED_EXTENSIONS = set(['png','jpg','jpeg'])
-
-def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 @app.route('/upload', methods=['POST'])
 def fileUpload():
@@ -37,26 +31,13 @@ def fileUpload():
     if not os.path.isdir(target):
         os.mkdir(target)
     logger.info("welcome to upload")
-    if 'file' not in request.files:
-        flash('No file part')
-        return 'file belum di upload'
-    
     file = request.files['file']
-
-    if file.filename == '':
-        flash('No selected file')
-        return 'file belum di upload'
-
-    if file and allowed_file(file.filename): 
-        filename = secure_filename(file.filename)
-        destination="/".join([target, filename])
-        file.save(destination)
-        session['uploadFilePath']=destination
-        response="Whatever you wish too return"
-        return response
-    else:
-        flash('Format dokumen yang diterima adalah - png,jpg,jpeg')
-        return 'OK'
+    filename = secure_filename(file.filename)
+    destination="/".join([target, filename])
+    file.save(destination)
+    session['uploadFilePath']=destination
+    response="Whatever you wish too return"
+    return response
 
 
 @app.route('/display/<filename>')
