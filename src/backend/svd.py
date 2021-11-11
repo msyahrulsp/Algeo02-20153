@@ -4,8 +4,7 @@ import numpy as np
 
 image = Image.open('monkas.png')
 
-array_image = np.asarray(image)
-array_image_transpose = array_image.transpose()
+array_image = np.asarray(image).astype(np.float64)
 
 
 def simultaneous_iteration(A, k=None, max_iter=1000, epsilon=1e-2):
@@ -78,3 +77,44 @@ def qr_method(A, k=None, max_iter=100, epsilon=1e-2):
     return np.diag(X), pQ
 
 
+def singular_value_decomposition(A, k=None, max_iter=200, epsilon=1e-2):
+    """SVD decomposition to calculate the eigenvalues and eigenvectors of A
+
+    Parameters:
+        A: matrix A, consists of 3-dimensional array (n, m, 3)
+        k: Number of eigenvalues to calculate
+        max_iter: Maximum number of iterations
+        epsilon: Tolerance for convergence
+    Returns:
+        rgb: Matrix 3-dimensional array (n, m, 3), reduced result of A
+    """
+    if k is None:
+        k = min(A.shape)
+
+    result = []
+    for i in range(3):
+        sub_array = A[:, :, i]
+        U_eigval, U_eigvector = simultaneous_iteration(sub_array@sub_array.T, k)
+
+        # calculate S from the corresponding eigenvalues in U_eigval
+        S = U_eigval
+        S = np.sqrt(np.abs(S))
+        diff = len(U_eigval)-len(S)
+        S = np.pad(np.diag(S), pad_width=[(0, diff), (0, diff)])
+
+        # calculate VT
+        VT = np.linalg.inv(S[:,:]) @ U_eigvector.T @ sub_array
+
+        # calculate the result
+        res = U_eigvector[:,:k] @ S[:k,:k] @ VT[:k,:]
+        res = np.clip(res, 0, 255).astype(np.uint8)
+        result.append(res)
+
+    rgb = np.dstack(result)
+
+    return rgb
+
+
+result = singular_value_decomposition(array_image, k=100)
+result = Image.fromarray(result)
+result.show()
