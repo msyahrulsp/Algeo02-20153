@@ -84,9 +84,7 @@ def singular_value_decomposition(A, p=None, max_iter=200, epsilon=1e-2):
     """
     if p is None:
         p = 1.0
-
-    k = np.clip(int(p * A.shape[0]), 0, min(A.shape))
-
+    k = np.clip(int(p * A.shape[0]), 1, min(A.shape[0], A.shape[1]))
     result = []
     for i in range(3):
         sub_array = A[:, :, i]

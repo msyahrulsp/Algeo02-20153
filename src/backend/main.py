@@ -40,7 +40,7 @@ def fileUpload():
     logger.info("welcome to upload")
     
     file = request.files['file']
-    compression_rate = int(request.form['compression_rate'])
+    compression_rate = float(request.form['compression_rate'])
     filename = secure_filename(file.filename)
     destination="/".join([target, filename])
     file.save(destination)
@@ -48,7 +48,7 @@ def fileUpload():
 
     image = Image.open(file)
     array_image = np.asarray(image).astype(np.float64) 
-    hasil = singular_value_decomposition(array_image,k=compression_rate)
+    hasil = singular_value_decomposition(array_image, p=compression_rate)
     hasil.save(f'{target_compressed}/compressed_'+filename)
     
     response="Whatever you wish too return"
