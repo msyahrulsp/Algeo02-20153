@@ -1,4 +1,5 @@
 import React from 'react';
+import "./Main.scss"
 
 class Main extends React.Component {
   constructor(props) {
@@ -59,18 +60,23 @@ class Main extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleUploadImage}>
-        <div>
-          <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
-        </div>
-        <p>{this.state.errorMessage}</p>
-        <input ref={(ref) => {this.numberInput = ref; }} type='text' name="compression_rate" placeholder="Compression Rate"/>
-        <div>
-          <button>Upload</button>
-        </div >
-        <img src={this.state.imageURL} alt="img" width='300px' />
-        <img src={this.state.resimageURL} alt="img" width='300px'/>
-      </form>
+        <form onSubmit={this.handleUploadImage} className="input-wrapper">
+          <div className="input-header">
+            <p className="input-text">Input Your Image</p>
+            <div className="input-file">
+              <input ref={(ref) => { this.uploadInput = ref; }} type="file" required />
+            </div>
+            <div className="compression-wrapper">
+              <p className="compression-text">Image Compression Rate : </p>
+              <input className="compression-input" ref={(ref) => {this.numberInput = ref; }} type='text' name="compression_rate" required />
+            </div>
+            <button className="input-button">Compress</button>
+          </div>
+          <p className="input-error">{this.state.errorMessage}</p>
+          
+          <img src={this.uploadInput} alt="img" width='300px' />
+          <img src={this.state.resimageURL} alt="img" width='300px'/>
+        </form>
     );
   }
 }

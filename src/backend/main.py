@@ -51,7 +51,6 @@ def fileUpload():
     hasil = singular_value_decomposition(array_image,k=compression_rate)
     hasil.save(f'{target_compressed}/compressed_'+filename)
     
-    
     response="Whatever you wish too return"
     return response
 
