@@ -1,6 +1,7 @@
 import time
 from flask import Flask
 from flask.helpers import url_for
+import flask_cors
 from werkzeug.utils import redirect, secure_filename
 from flask import request,session
 import os
@@ -8,6 +9,8 @@ import logging
 from PIL import Image
 import numpy as np
 from svd import singular_value_decomposition
+from flask_cors import CORS
+
 
 
 logging.basicConfig(level=logging.INFO)
@@ -15,6 +18,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('HELLO WORLD')
 
 app = Flask("__name__")
+
 
 @app.route('/time')
 def get_return_time():
@@ -65,4 +69,5 @@ if __name__ == "__main__":
     app.secret_key = os.urandom(24)
     app.run(debug=True,host="0.0.0.0",use_reloader=False)
 
+flask_cors.CORS(app, expose_headers='Authorization')
 

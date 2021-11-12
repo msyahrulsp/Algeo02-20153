@@ -7,7 +7,9 @@ import { About } from './page/About';
 import { Compressor } from './page/Compressor';
 
 function App() {
+
   return (
+  
     <Router>
       <div>
         <Routes>
