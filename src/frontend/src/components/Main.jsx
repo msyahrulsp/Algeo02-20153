@@ -62,19 +62,22 @@ class Main extends React.Component {
 
   download_file = e => {
     e.preventDefault();
-    axios({
-      url: this.state.resimageURL,
-      method: 'GET',
-      responseType: 'blob', // important
-    }).then((response) => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      console.log(this.fileName)
-      link.setAttribute('download', 'compressed_'+this.uploadInput.files[0].name);
-      document.body.appendChild(link);
-      link.click();
-    });
+    if (this.uploadInput.files[0] != null){
+      axios({
+        url: this.state.resimageURL,
+        method: 'GET',
+        responseType: 'blob', // important
+      }).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        console.log(this.fileName)
+        link.setAttribute('download', 'compressed_'+this.uploadInput.files[0].name);
+        document.body.appendChild(link);
+        link.click();
+      });
+    }
+    
   }
   
   
