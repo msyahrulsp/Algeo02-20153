@@ -83,7 +83,7 @@ class Main extends React.Component {
   
   render() {
     return (
-        <body>
+        <div>
           <form onSubmit={this.handleUploadImage} className="input-wrapper">
             <div className="input-header">
               <p className="input-text">Input Your Image</p>
@@ -102,7 +102,7 @@ class Main extends React.Component {
             <img src={this.state.resimageURL} alt="img" width='300px'/> 
           </form>
           <button onClick={this.download_file}>Download</button>
-        </body>
+        </div>
         
     );
   }
