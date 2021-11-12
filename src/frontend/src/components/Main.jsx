@@ -74,7 +74,7 @@ class Main extends React.Component {
           </div>
           <p className="input-error">{this.state.errorMessage}</p>
           
-          <img src={this.uploadInput} alt="img" width='300px' />
+          <img src={this.state.imageURL} alt="img" width='300px' />
           <img src={this.state.resimageURL} alt="img" width='300px'/>
         </form>
     );
