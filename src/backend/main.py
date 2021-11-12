@@ -50,9 +50,8 @@ def fileUpload():
     file.save(destination)
     session['uploadFilePath']=destination
 
-    image = Image.open(file)
-    array_image = np.asarray(image).astype(np.float64) 
-    hasil = singular_value_decomposition(array_image, p=compression_rate)
+    image = Image.open(file) 
+    hasil = singular_value_decomposition(image, p=compression_rate)
     hasil.save(f'{target_compressed}/compressed_'+filename)
     
     response="Whatever you wish too return"

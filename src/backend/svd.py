@@ -71,23 +71,50 @@ def qr_method(A, k=None, max_iter=100, epsilon=1e-2):
     return np.diag(X), pQ
 
 
-def singular_value_decomposition(A, p=None, max_iter=200, epsilon=1e-2):
-    """SVD decomposition to calculate the eigenvalues and eigenvectors of A
+def singular_value_decomposition(I: Image, p=None, max_iter=200, epsilon=1e-2):
+    """Compression of image I, which reduces the quality of the image by using SVD 
 
     Parameters:
-        A: matrix A, consists of 3-dimensional array (n, m, 3)
+        I: image object
         p: fraction of eigenvalues to calculate (0 <= p <= 1), default is 1.0
         max_iter: Maximum number of iterations
         epsilon: Tolerance for convergence
     Returns:
-        rgb: Matrix 3-dimensional array (n, m, 3), reduced result of A
+        rgb: Image object, reduced result of I
     """
     if p is None:
         p = 1.0
+
+    # If the image is not RGB, use a slightly different approach
+    if I.mode == 'P' or I.mode == 'L':
+        # The image is using palette mode
+        I = I.convert('RGBA')
+        num_channel = 4
+    elif I.mode == 'RGBA': 
+        # For transparent image e.g. PNG
+        num_channel = 4
+    elif I.mode == 'RGB':
+        # Regular image e.g. JPG or JPEG
+        num_channel = 3
+    else:
+        num_channel = 0
+        raise ValueError('Unsupported image mode')
+
+    mode = I.mode
+    print("MODE:", mode)
+    A = np.asarray(I, dtype=np.float64)
     k = np.clip(int(p * A.shape[0]), 1, min(A.shape[0], A.shape[1]))
-    result = []
-    for i in range(3):
-        sub_array = A[:, :, i]
+    result = [] 
+    for i in range(num_channel):
+        if i == 3:
+            # channel alpha
+            result.append(A[:,:,3])
+            break
+
+        if num_channel == 1:
+            sub_array = A
+        else:
+            sub_array = A[:, :, i]
         U_eigval, U_eigvector = simultaneous_iteration(sub_array@sub_array.T, k, max_iter, epsilon)
 
         # calculate S from the corresponding eigenvalues in U_eigval
@@ -104,6 +131,10 @@ def singular_value_decomposition(A, p=None, max_iter=200, epsilon=1e-2):
         res = np.clip(res, 0, 255).astype(np.uint8)
         result.append(res)
 
-    rgb = np.dstack(result)
-    result = Image.fromarray(rgb)
+    if num_channel != 1:
+        image = np.dstack(result).astype(np.uint8)
+    else:
+        image = result[0]
+
+    result = Image.fromarray(image).convert(mode)
     return result
