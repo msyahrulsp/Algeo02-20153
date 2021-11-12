@@ -1,12 +1,6 @@
 from PIL import Image
 import numpy as np
 
-
-# image = Image.open("lena_image.jpg")
-
-# array_image = np.asarray(image).astype(np.float64)
-
-
 def simultaneous_iteration(A, k=None, max_iter=1000, epsilon=1e-2):
     """Simultaneous power iteration to calculate the eigenvalues and eigenvectors of A
 
@@ -77,24 +71,26 @@ def qr_method(A, k=None, max_iter=100, epsilon=1e-2):
     return np.diag(X), pQ
 
 
-def singular_value_decomposition(A, k=None, max_iter=200, epsilon=1e-2):
+def singular_value_decomposition(A, p=None, max_iter=200, epsilon=1e-2):
     """SVD decomposition to calculate the eigenvalues and eigenvectors of A
 
     Parameters:
         A: matrix A, consists of 3-dimensional array (n, m, 3)
-        k: Number of eigenvalues to calculate
+        p: fraction of eigenvalues to calculate (0 <= p <= 1), default is 1.0
         max_iter: Maximum number of iterations
         epsilon: Tolerance for convergence
     Returns:
         rgb: Matrix 3-dimensional array (n, m, 3), reduced result of A
     """
-    if k is None:
-        k = min(A.shape)
+    if p is None:
+        p = 1.0
+
+    k = np.clip(int(p * A.shape[0]), 0, min(A.shape))
 
     result = []
     for i in range(3):
         sub_array = A[:, :, i]
-        U_eigval, U_eigvector = simultaneous_iteration(sub_array@sub_array.T, k)
+        U_eigval, U_eigvector = simultaneous_iteration(sub_array@sub_array.T, k, max_iter, epsilon)
 
         # calculate S from the corresponding eigenvalues in U_eigval
         S = U_eigval
@@ -102,8 +98,8 @@ def singular_value_decomposition(A, k=None, max_iter=200, epsilon=1e-2):
         diff = len(U_eigval)-len(S)
         S = np.pad(np.diag(S), pad_width=[(0, diff), (0, diff)])
 
-        # calculate VT
-        VT = np.linalg.inv(S[:,:]) @ U_eigvector.T @ sub_array
+        # calculate VT from the inverse of U_eigvector and S
+        VT = np.linalg.inv(S) @ U_eigvector.T @ sub_array
 
         # calculate the result
         res = U_eigvector[:,:k] @ S[:k,:k] @ VT[:k,:]
@@ -111,10 +107,5 @@ def singular_value_decomposition(A, k=None, max_iter=200, epsilon=1e-2):
         result.append(res)
 
     rgb = np.dstack(result)
-    hasil = Image.fromarray(rgb)
-    return hasil
-
-
-# result = singular_value_decomposition(array_image, k=10)
-# result = Image.fromarray(result)
-# result.show()
+    result = Image.fromarray(rgb)
+    return result
