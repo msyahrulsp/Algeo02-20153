@@ -1,13 +1,7 @@
 .compressor-wrapper {
     text-align: center;
-  }
   
   .compressor-title {
     font-size: 4vh;
   }
-  
-  @media (max-width: 1025px) {
-    .compressor-wrapper {
-      text-align: left;
-    }
-  }
+}

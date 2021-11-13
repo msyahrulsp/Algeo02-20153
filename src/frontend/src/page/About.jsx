@@ -1,9 +1,14 @@
+import { Navbar } from "../components/Navbar/Navbar"
+
 import "./About.scss"
 
 export const About = () => {
     return (
-        <div className="about-wrapper">
-            <p className="about-text">Disini perkenalan</p>
-        </div>
+        <>
+            <Navbar />
+            <div className="about-wrapper">
+                <p className="about-text">Disini perkenalan</p>
+            </div>
+        </>
     )
 }

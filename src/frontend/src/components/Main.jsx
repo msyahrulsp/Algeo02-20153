@@ -10,6 +10,8 @@ class Main extends React.Component {
     this.state = {
       imageURL: '',
       resimageURL:'',
+      doneProcess: false,
+      processing: false,
       errorMessage:''
     };
 
@@ -18,6 +20,10 @@ class Main extends React.Component {
 
   
   handleUploadImage(ev) {
+    this.setState({
+      processing: true
+    })
+
     ev.preventDefault();
 
     const data = new FormData();
@@ -31,29 +37,44 @@ class Main extends React.Component {
       console.log(fileName)
       if (fileName.includes(".png") || fileName.includes('.jpg') || fileName.includes('.jpeg')){
         data.append('file', this.uploadInput.files[0]);
-        data.append('filename', this.uploadInput.files[0].name);  
-        data.append('compression_rate',this.numberInput.value);
+        data.append('filename', this.uploadInput.files[0].name);
         
-        fetch('/upload', {
-          method: 'POST',
-          body: data,
-        }).then((response) => {
-    
-            if(response.status === 200){
-                this.setState({ 
-                  imageURL: `http://127.0.0.1:5000/static/test_docs/${fileName}`,
-                  resimageURL: `http://127.0.0.1:5000/static/hasil/compressed_${fileName}`,
-                  errorMessage:''
-              });
-            }
-        });
+        if(this.numberInput.value < 0 || this.numberInput.value > 1) {
+          this.setState({
+            errorMessage: 'Compression Rate hanya bisa 0 sampai 1',
+            processing: false
+          })
+        } else {
+          this.setState({
+            errorMessage: ''
+          })
+          data.append('compression_rate',this.numberInput.value);
+        
+          fetch('/upload', {
+            method: 'POST',
+            body: data,
+          }).then((response) => {
+      
+              if(response.status === 200){
+                  this.setState({ 
+                    imageURL: `http://127.0.0.1:5000/static/test_docs/${fileName}`,
+                    resimageURL: `http://127.0.0.1:5000/static/hasil/compressed_${fileName}`,
+                    doneProcess: true,
+                    processing: false,
+                    errorMessage:''
+                });
+              }
+          });
+        }
       }else{
         this.setState({
+          processing: false,
           errorMessage: 'Format file tidak valid'
         })
       }
     }else{
       this.setState({
+        processing: false,
         errorMessage: 'Belum ada file yang di upload'
       }) 
     }
@@ -86,7 +107,7 @@ class Main extends React.Component {
         <div>
           <form onSubmit={this.handleUploadImage} className="input-wrapper">
             <div className="input-header">
-              <p className="input-text">Input Your Image</p>
+              <p className="input-title">Input Your Image</p>
               <div className="input-file">
                 <input ref={(ref) => { this.uploadInput = ref; }} type="file" required />
               </div>
@@ -94,16 +115,25 @@ class Main extends React.Component {
                 <p className="compression-text">Image Compression Rate : </p>
                 <input className="compression-input" ref={(ref) => {this.numberInput = ref; }} type='text' name="compression_rate" required />
               </div>
-              <button className="input-button">Compress</button>
+              <button className={this.state.processing ? "input-button-hidden" : "input-button"}>Compress</button>
+              <p className="input-error">{this.state.errorMessage}</p>
             </div>
-            <p className="input-error">{this.state.errorMessage}</p>
           
-            <img src={this.state.imageURL} alt="img" width='300px' />
-            <img src={this.state.resimageURL} alt="img" width='300px'/> 
+            <div className={this.state.doneProcess ? "result-wrapper" : "result-wrapper-hidden"}>
+              <div className="result-image">
+                <div className="result-before">
+                  <p>Before</p>
+                  <img src={this.state.imageURL} alt="img" width="300px" />
+                </div>
+                <div className="result-after">
+                  <p>After</p>
+                  <img src={this.state.resimageURL} alt="img" width="300px" />
+                </div>
+              </div>
+              <button className="result-button" onClick={this.download_file}>Download</button>
+            </div>
           </form>
-          <button onClick={this.download_file}>Download</button>
         </div>
-        
     );
   }
 }
