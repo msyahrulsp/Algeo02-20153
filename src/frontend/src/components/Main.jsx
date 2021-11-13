@@ -12,12 +12,12 @@ class Main extends React.Component {
       resimageURL:'',
       doneProcess: false,
       processing: false,
-      errorMessage:''
+      errorMessage:'',
+      exeTime: ''
     };
 
     this.handleUploadImage = this.handleUploadImage.bind(this);
   }
-
   
   handleUploadImage(ev) {
     this.setState({
@@ -63,6 +63,12 @@ class Main extends React.Component {
                     processing: false,
                     errorMessage:''
                 });
+
+                fetch('time').then(res => res.json()).then(d => {
+                  this.setState({
+                    exeTime: d.time
+                  })
+                })
               }
           });
         }
@@ -123,14 +129,18 @@ class Main extends React.Component {
               <div className="result-image">
                 <div className="result-before">
                   <p>Before</p>
-                  <img src={this.state.imageURL} alt="img" width="300px" />
+                  <img src={this.state.imageURL} alt="img" width="350px" />
                 </div>
                 <div className="result-after">
                   <p>After</p>
-                  <img src={this.state.resimageURL} alt="img" width="300px" />
+                  <img src={this.state.resimageURL} alt="img" width="350px" />
                 </div>
               </div>
               <button className="result-button" onClick={this.download_file}>Download</button>
+              <div className="result-sum">
+                <p className="result-pixel">Perbedaan Pixel: ?</p>
+                <p className="result-time">Waktu Eksekusi: {this.state.exeTime}</p>
+              </div>
             </div>
           </form>
         </div>

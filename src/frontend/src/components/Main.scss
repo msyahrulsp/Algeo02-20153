@@ -1,4 +1,5 @@
 .input-wrapper {
+    margin-top: 2.5vh;
     padding: 0 3em;
     .input-header {
         display: flex;
@@ -8,7 +9,6 @@
 
         .input-title {
             font-weight: bold;
-            margin-top: 8px;
             margin-bottom: 10px;
         }
 
@@ -28,7 +28,7 @@
             .compression-text {
                 display: flex;
                 margin-top: 0px;
-                font-size: 2vh;
+                font-size: 15px;
                 justify-self: center;
                 justify-content: center;
                 align-items: center;
@@ -50,6 +50,7 @@
 
     .input-button {
         display: flex;
+        padding: 0.5px 5px;
     }
 
     .input-button-hidden {
@@ -59,6 +60,14 @@
     .result-wrapper {
         display: flex;
         flex-direction: column;
+
+        .result-sum {
+            margin-top: 15px;
+            text-align: left;
+            p {
+                font-size: 15px;
+            }
+        }
 
         button {
             align-self: center;
@@ -74,6 +83,8 @@
     .result-button {
         margin-top: 25px;
         width: fit-content;
+        font-size: 14px;
+        padding: 0.5px 5px;
         justify-content: center;
         align-items: center;
         justify-self: center;

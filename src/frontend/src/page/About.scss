@@ -1,0 +1,46 @@
+.about-wrapper {
+    margin-top: 2.5vh;
+    padding: 0 3em;
+    widtH: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 0 50px 0;
+
+    .about-container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        grid-gap: 20px;
+        align-items: center;
+
+        ul {
+            text-align: left;
+            font-size: 18px;
+            margin-left: 15px;
+        }
+
+        &-reverse {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            grid-gap: 20px;
+            align-items: center;
+
+            ul {
+                text-align: right;
+                font-size: 18px;
+                margin-right: 15px;
+            }
+        }
+    }
+}
+
+img {
+    width: 200px;
+    justify-self: center;
+}
+
+p {
+    font-size: 18px;
+}
