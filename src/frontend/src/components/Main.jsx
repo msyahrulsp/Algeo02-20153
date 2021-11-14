@@ -14,7 +14,8 @@ class Main extends React.Component {
       doneProcess: false,
       processing: false,
       errorMessage:'',
-      exeTime: ''
+      exeTime: '',
+      numberInput: 0
     };
 
     this.handleUploadImage = this.handleUploadImage.bind(this);
@@ -62,7 +63,8 @@ class Main extends React.Component {
                     resimageURL: `http://127.0.0.1:5000/static/hasil/compressed_${fileName}`,
                     doneProcess: true,
                     processing: false,
-                    errorMessage:''
+                    errorMessage:'',
+                    numberInput: this.numberInput.value
                 });
 
                 fetch('time').then(res => res.json()).then(d => {
@@ -121,6 +123,7 @@ class Main extends React.Component {
               <div className="compression-wrapper">
                 <p className="compression-text">Image Compression Rate : </p>
                 <input className="compression-input" ref={(ref) => {this.numberInput = ref; }} type='text' name="compression_rate" required />
+                <p className="compression-text">%</p>
               </div>
               <button className={this.state.processing ? "input-button-hidden" : "input-button"}>Compress</button>
               <p className="input-error">{this.state.errorMessage}</p>
@@ -144,7 +147,7 @@ class Main extends React.Component {
               </div>
               <button className="result-button" onClick={this.download_file}>Download</button>
               <div className="result-sum">
-                <p className="result-pixel">Perbedaan Pixel: ?</p>
+                <p className="result-pixel">Perbedaan Pixel: {this.state.numberInput}%</p>
                 <p className="result-time">Waktu Eksekusi: {this.state.exeTime}</p>
               </div>
             </div>
