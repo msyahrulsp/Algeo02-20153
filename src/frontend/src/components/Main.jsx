@@ -1,7 +1,8 @@
 import React from 'react';
-import "./Main.scss"
 import axios from 'axios'
+import { SpinnerDotted } from 'spinners-react'
 
+import "./Main.scss"
 
 class Main extends React.Component {
   constructor(props) {
@@ -124,6 +125,11 @@ class Main extends React.Component {
               <button className={this.state.processing ? "input-button-hidden" : "input-button"}>Compress</button>
               <p className="input-error">{this.state.errorMessage}</p>
             </div>
+
+            {this.state.processing ? (
+                <SpinnerDotted color="#171717" className="loading" size="40" />
+                ) : (<></>)
+            }
           
             <div className={this.state.doneProcess ? "result-wrapper" : "result-wrapper-hidden"}>
               <div className="result-image">
