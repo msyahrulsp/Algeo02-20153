@@ -84,7 +84,9 @@ def singular_value_decomposition(I: Image, p=None, max_iter=200, epsilon=1e-2):
         rgb: Image object, reduced result of I
     """
     if p is None:
-        p = 1.0
+        p = 100.0
+    else:
+        p = 100.0 - p
 
     # If the image is not RGB, use a slightly different approach
     if I.mode == 'P' or I.mode == 'L':
