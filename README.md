@@ -3,7 +3,7 @@ Sebuah *Image Compressor* yang bisa meng-*compress* foto menggunakan metode *Sin
 
 ## Struktur Folder
 ```sh
-Algeo02-20153                   # Berisi java byte code (*.class)
+Algeo02-20153                   
 ├── src                         # Berisi source code dari program (frontend dan  backend)
 │   ├── backend                 # Berisi program backend
 │   │   └── static              # Berisi data yang perlu diambil ketika web dijalankan
