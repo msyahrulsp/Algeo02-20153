@@ -40,9 +40,9 @@ class Main extends React.Component {
         data.append('file', this.uploadInput.files[0]);
         data.append('filename', this.uploadInput.files[0].name);
         
-        if(this.numberInput.value < 0 || this.numberInput.value > 1) {
+        if(this.numberInput.value < 0 || this.numberInput.value > 100) {
           this.setState({
-            errorMessage: 'Compression Rate hanya bisa 0 sampai 1',
+            errorMessage: 'Compression Rate hanya bisa 0 sampai 100',
             processing: false
           })
         } else {

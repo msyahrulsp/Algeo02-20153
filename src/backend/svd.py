@@ -1,5 +1,6 @@
 from PIL import Image
 import numpy as np
+from numpy.core.fromnumeric import shape
 
 def simultaneous_iteration(A, k=None, max_iter=1000, epsilon=1e-2):
     """Simultaneous power iteration to calculate the eigenvalues and eigenvectors of A
@@ -103,7 +104,15 @@ def singular_value_decomposition(I: Image, p=None, max_iter=200, epsilon=1e-2):
     mode = I.mode
     print("MODE:", mode)
     A = np.asarray(I, dtype=np.float64)
-    k = np.clip(int(p * A.shape[0]), 1, min(A.shape[0], A.shape[1]))
+
+    # Convert p to matrix rank used
+    # The fomula is: p = (mk + k + kn) / (mn) * 100%
+    # Then we solve for k: k = mn / (m + 1 + k) * p/100%
+    m = A.shape[0]
+    n = A.shape[1]
+    k = (m * n) / (m + 1 + n) * (p) / 100.0
+    k = int(k)
+    
     result = [] 
     for i in range(num_channel):
         if i == 3:
